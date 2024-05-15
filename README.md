@@ -1,6 +1,34 @@
-# Docker launch
+# Docker
 
+## Requirements
+* Python 3.10, Pytorch 2.1.2, [xformers](https://github.com/facebookresearch/xformers) 0.0.23
+* CUDA support
+* More detail (See [environment.yml](environment.yml))
+A suitable [conda](https://conda.io/) environment named `resshift` can be created and activated with:
 
+```
+conda env create -n resshift python=3.10
+conda activate resshift
+pip install -r requirements.txt
+```
+or
+```
+conda env create -f environment.yml
+conda activate resshift
+```
+
+## Docker Build
+Build:
+```
+docker build -t <image_name> .
+```
+Run:
+```
+docker run -p 7860:7860 --gpus all -it <image_name>
+```
+Or simply run **run.sh**
+
+Server starts locally on http://127.0.0.1:7860
 
 # ResShift: Efficient Diffusion Model for Image Super-resolution by Residual Shifting (NeurIPS 2023, Spotlight) 
 
@@ -28,22 +56,6 @@
 - **2023.08.02**: Add [Replicate](https://replicate.com/) demo [![Replicate](https://img.shields.io/badge/Demo-%F0%9F%9A%80%20Replicate-blue)](https://replicate.com/cjwbw/resshift). 
 - **2023.07.31**: Add Colab demo <a href="https://colab.research.google.com/drive/1CL8aJO7a_RA4MetanrCLqQO5H7KWO8KI?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="google colab logo"></a>.  
 - **2023.07.24**: Create this repo.
-
-## Requirements
-* Python 3.10, Pytorch 2.1.2, [xformers](https://github.com/facebookresearch/xformers) 0.0.23
-* More detail (See [environment.yml](environment.yml))
-A suitable [conda](https://conda.io/) environment named `resshift` can be created and activated with:
-
-```
-conda env create -n resshift python=3.10
-conda activate resshift
-pip install -r requirements.txt
-```
-or
-```
-conda env create -f environment.yml
-conda activate resshift
-```
 
 ## Applications
 ### :point_right: Real-world image super-resolution
