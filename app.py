@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 # Power by Zongsheng Yue 2023-08-15 09:39:58
 
+import os
 import gradio as gr
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from omegaconf import OmegaConf
 import torch
 from sampler import ResShiftSampler
 
+from scripts.resolution import compare_images
 from utils import util_image
 from basicsr.utils.download_util import load_file_from_url
 
@@ -183,19 +185,24 @@ If you have any questions, please feel free to contact me via <b>zsyzam@gmail.co
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=zsyOAOA/ResShift)
 """
 
-check_dependencies()
+# check_dependencies()
 print("\nRunning on local URL:  http://127.0.0.1:7860\n")
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+image = script_dir + "/testdata/test/ryan.png"
+demo = predict(in_path=image, task="realsr")
+image_res = script_dir + "/restored_output/ryan.png"
+image_orig = script_dir + "/restored_output/ryan_original.png"
+mse, ssim = compare_images(image_res, image_orig)
+print("MSE =", mse)
+print("SSIM =", ssim, "\n")
 
 demo = gr.Interface(
     fn=predict,
     inputs=[
         gr.Image(type="filepath", label="Input: Low Quality Image"),
-        gr.Dropdown(
-            choices=["realsr", "bicsr"],
-            value="realsr",
-            label="Task",
-        ),
-        gr.Number(value=12345, precision=0, label="Ranom seed"),
+        gr.Dropdown(choices=["realsr", "bicsr"], value="realsr", label="Task"),
+        gr.Number(value=12345, precision=0, label="Random seed"),
     ],
     outputs=[
         gr.Image(type="numpy", label="Output: High Quality Image"),
